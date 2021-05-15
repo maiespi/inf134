@@ -8,3 +8,5 @@ btn.move(100,100);
 btn.onclick(function(e){
 	console.log(e);
 });
+
+var checkbox = new MyToolkit.Checkbox;
