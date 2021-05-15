@@ -152,17 +152,41 @@ var MyToolkit = (function() {
             }
             console.log("Mouse hovering checkbox");
         })
-        // first_checkmark_line.mouseover(function(){
-        //     rect.fill({ color: 'lightgrey'});
-        // })
-        // second_checkmark_line.mouseover(function(){
-        //     rect.fill({ color: 'lightgrey'});
-        // })
+        first_checkmark_line.mouseover(function(){
+            rect.fill({ color: 'lightgrey'});
+            if (clicked == false) {
+                first_checkmark_line.stroke({ color: 'lightgrey'});
+                second_checkmark_line.stroke({ color: 'lightgrey'});
+            }
+        })
+        second_checkmark_line.mouseover(function(){
+            rect.fill({ color: 'lightgrey'});
+            if (clicked == false) {
+                first_checkmark_line.stroke({ color: 'lightgrey'});
+                second_checkmark_line.stroke({ color: 'lightgrey'});
+            }
+        })
         rect.mouseout(function(){
             this.fill({ color: 'white'});
             if (clicked == false) {
                 first_checkmark_line.stroke({ color: 'white'});
                 second_checkmark_line.stroke({ color: 'white'});
+            }
+            console.log("Mouse not hovering checkbox anymore");
+        })
+        first_checkmark_line.mouseout(function(){
+            rect.fill({ color: 'lightgrey'});
+            if (clicked == false) {
+                first_checkmark_line.stroke({ color: 'lightgrey'});
+                second_checkmark_line.stroke({ color: 'lightgrey'});
+            }
+            console.log("Mouse not hovering checkbox anymore");
+        })
+        second_checkmark_line.mouseout(function(){
+            rect.fill({ color: 'lightgrey'});
+            if (clicked == false) {
+                first_checkmark_line.stroke({ color: 'lightgrey'});
+                second_checkmark_line.stroke({ color: 'lightgrey'});
             }
             console.log("Mouse not hovering checkbox anymore");
         })
