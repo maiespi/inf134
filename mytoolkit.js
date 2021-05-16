@@ -195,7 +195,221 @@ var MyToolkit = (function() {
             console.log("Checkbox was just clicked");
         })
     }
-return {Button, Checkbox}
+
+    var RadioButton = function(){
+        var clicked1 = false;
+        var clicked2 = false;
+        var clicked3 = false;
+
+        var outside_circle1 = draw.circle(15)
+        var outside_circle2 = draw.circle(15)
+        var outside_circle3 = draw.circle(15)
+
+        var inside_circle1 = draw.circle(10)
+        var inside_circle2 = draw.circle(10)
+        var inside_circle3 = draw.circle(10)
+
+        outside_circle1.attr({
+            stroke: 'black',
+            fill: 'white'
+        })
+
+        inside_circle1.attr({
+            fill:'white'
+        })
+
+        var text1 = draw.text(function(add) {
+            add.tspan("Click radio button 1").attr({
+                x: 800,
+                y: 91,
+                fill: 'black',
+                'font-family': 'Montserrat, sans-serif',
+                'font-size': '12px',
+                'text-anchor': 'middle',
+                'alignment-baseline': 'central'
+            })
+        })
+
+        outside_circle2.attr({
+            stroke: 'black',
+            fill: 'white'
+        })
+
+        inside_circle2.attr({
+            fill:'white'
+        })
+
+        var text2 = draw.text(function(add) {
+            add.tspan("Click radio button 2").attr({
+                x: 743,
+                y: 127,
+                fill: 'black',
+                'font-family': 'Montserrat, sans-serif',
+                'font-size': '12px'
+            })
+        })
+
+        outside_circle3.attr({
+            stroke: 'black',
+            fill: 'white'
+        })
+
+        inside_circle3.attr({
+            fill:'white'
+        })
+
+        var text3 = draw.text(function(add) {
+            add.tspan("Click radio button 3").attr({
+                x: 743,
+                y: 157,
+                fill: 'black',
+                'font-family': 'Montserrat, sans-serif',
+                'font-size': '12px'
+            })
+        })
+
+        outside_circle1.move(710,86)
+        outside_circle2.move(710,115)
+        outside_circle3.move(710,145)
+
+        inside_circle1.move(712.5,88.5)
+        inside_circle2.move(712.5,117.5)
+        inside_circle3.move(712.5,147.5)
+
+        inside_circle1.click(function(event){
+            if (clicked1 == false) {
+                this.fill('pink')
+                clicked1 = true
+                console.log("Radio button 1 was clicked")
+                if (clicked2 == true || clicked3 == true) {
+                    clicked2 = false
+                    clicked3 = false
+                    inside_circle2.fill('white')
+                    inside_circle3.fill('white')
+                }
+            } else {
+                this.fill('white')
+                clicked1 = false
+                console.log("Radio button 1 was unclicked")
+            }
+        })
+
+        inside_circle1.mouseover(function() {
+            console.log("Mouse hovering radio button 1")
+        })
+
+        inside_circle1.mouseout(function() {
+            console.log("Mouse stopped hovering radio button 1")
+        })
+
+        outside_circle1.click(function(event){
+            if (clicked1 == false) {
+                inside_circle1.fill('pink')
+                clicked1 = true
+                console.log("Radio button 1 was clicked")
+                if (clicked2 == true || clicked3 == true) {
+                    clicked2 = false
+                    clicked3 = false
+                    inside_circle2.fill('white')
+                    inside_circle3.fill('white')
+                }
+            } else {
+                inside_circle1.fill('white')
+                clicked1 = false
+                console.log("Radio button 1 was unclicked")
+            }
+        })
+
+        inside_circle2.click(function(event){
+            if (clicked2 == false) {
+                this.fill('#90ee90')
+                clicked2 = true
+                console.log("Radio button 2 was clicked")
+                if (clicked1 == true || clicked3 == true) {
+                    clicked1 = false
+                    clicked3 = false
+                    inside_circle1.fill('white')
+                    inside_circle3.fill('white')
+                }
+            } else {
+                this.fill('white')
+                clicked2 = false
+                console.log("Radio button 2 was unclicked")
+            }
+        })
+
+        inside_circle2.mouseover(function() {
+            console.log("Mouse hovering radio button 2")
+        })
+
+        inside_circle2.mouseout(function() {
+            console.log("Mouse stopped hovering radio button 2")
+        })
+
+        outside_circle2.click(function(event){
+            if (clicked2 == false) {
+                inside_circle2.fill('#90ee90')
+                clicked2 = true
+                console.log("Radio button 2 was clicked")
+                if (clicked1 == true || clicked3 == true) {
+                    clicked1 = false
+                    clicked3 = false
+                    inside_circle1.fill('white')
+                    inside_circle3.fill('white')
+                }
+            } else {
+                inside_circle2.fill('white')
+                clicked2 = false
+                console.log("Radio button 2 was unclicked")
+            }
+        })
+
+        inside_circle3.click(function(event){
+            if (clicked3 == false) {
+                this.fill('#ffa500')
+                clicked3 = true
+                console.log("Radio button 3 was clicked")
+                if (clicked1 == true || clicked2 == true) {
+                    clicked1 = false
+                    clicked2 = false
+                    inside_circle1.fill('white')
+                    inside_circle2.fill('white')
+                }
+            } else {
+                this.fill('white')
+                clicked3 = false
+                console.log("Radio button 3 was unclicked")
+            }
+        })
+
+        inside_circle3.mouseover(function() {
+            console.log("Mouse hovering radio button 3")
+        })
+
+        inside_circle3.mouseout(function() {
+            console.log("Mouse stopped hovering radio button 3")
+        })
+
+        outside_circle3.click(function(event){
+            if (clicked3 == false) {
+                inside_circle3.fill('#ffa500')
+                clicked3 = true
+                console.log("Radio button 3 was clicked")
+                if (clicked1 == true || clicked2 == true) {
+                    clicked1 = false
+                    clicked2 = false
+                    inside_circle1.fill('white')
+                    inside_circle2.fill('white')
+                }
+            } else {
+                inside_circle3.fill('white')
+                clicked3 = false
+                console.log("Radio button 3 was unclicked")
+            }
+        })
+    }
+
+return {Button, Checkbox, RadioButton}
 }());
 
 export{MyToolkit}

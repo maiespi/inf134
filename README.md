@@ -13,12 +13,12 @@
 - [x] Expose an event handler that notifies consuming code when the widget state has changed.
 
 ### Radio Button ###
-- [ ] Visually support checked and unchecked states.
-- [ ] Support 2 to n number of buttons, where n is set by the consuming code, with minimum of two, positioned vertically.
-- [ ] Ensure that only one button can be checked at a time.
-- [ ] Expose a custom label property to set the text that appears to the right of each button.
-- [ ] Expose an event handler that notifies consuming code when the checked state has changed and which n has been checked.
-- [ ] Expose an event handler that notifies consuming code when the widget state has changed.
+- [x] Visually support checked and unchecked states.
+- [x] Support 2 to n number of buttons, where n is set by the consuming code, with minimum of two, positioned vertically.
+- [x] Ensure that only one button can be checked at a time.
+- [x] Expose a custom label property to set the text that appears to the right of each button.
+- [x] Expose an event handler that notifies consuming code when the checked state has changed and which n has been checked.
+- [x] Expose an event handler that notifies consuming code when the widget state has changed.
 
 ### Text Box ###
 - [ ] Visually support a caret | that informs the user about the position of the cursor. The caret should only be visually present when the widget has hover focus.
