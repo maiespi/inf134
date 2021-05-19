@@ -11,3 +11,4 @@ btn.onclick(function(e){
 
 var checkbox = new MyToolkit.Checkbox;
 var radio_button = new MyToolkit.RadioButton;
+var textbox = new MyToolkit.TextBox;

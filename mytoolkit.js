@@ -409,7 +409,73 @@ var MyToolkit = (function() {
         })
     }
 
-return {Button, Checkbox, RadioButton}
+    var TextBox = function() {
+        var text_string = ""
+        var clicked = false
+        var mouse = false
+
+        var group = draw.group();
+        var rect = group.rect(350, 75).fill("white").stroke("black");
+        var text = group.text("|").move(5,2).attr({
+            fill: 'black',
+            'font-family': 'Montserrat, sans-serif',
+            'font-size': '18px'
+        });
+        group.move(970,80);
+
+        group.click(function(event) {
+            if (clicked == false) {
+                clicked = true
+                console.log("The textbox is now ready for input")
+                SVG.on(document, "keyup", function(e) {
+                    if (e.key === "Backspace") {
+                        if (text_string.length <= 1) {
+                            text_string = ""
+                            update()
+                        }
+                        else {
+                            text_string = text_string.substr(0, text_string.length - 1)
+                            update()
+                        }
+                    } 
+                    else if (e.key === "Shift" || e.key === "Enter") {
+                        
+                    }
+                    else {
+                        var letter = e.key
+                        text_string = text_string + letter
+                        console.log(text_string)
+                        update()
+                    }
+                })
+            } else {
+                console.log("User has already clicked on the textbox")
+            }      
+        })
+
+        var update = function() {
+            if (mouse == true) {
+                text.text(text_string + "|");   
+            } else {
+                text.text(text_string);
+            }
+                  
+        }
+
+        group.mouseover(function() {
+            mouse = true;
+            text.text(text_string + "|");
+            console.log("Mouse is hovering textbox");
+        })
+
+        group.mouseout(function() {
+            mouse = false;
+            text.text(text_string);
+            console.log("Mouse is no longer hovering textbox");
+        })
+    }
+
+return {Button, Checkbox, RadioButton, TextBox}
 }());
 
 export{MyToolkit}
