@@ -21,10 +21,10 @@
 - [x] Expose an event handler that notifies consuming code when the widget state has changed.
 
 ### Text Box ###
-- [ ] Visually support a caret | that informs the user about the position of the cursor. The caret should only be visually present when the widget has hover focus.
-- [ ] Expose a custom property to get the text entered by the user.
-- [ ] Expose an event handler that notifies consuming code when the text has changed.
-- [ ] Expose an event handler that notifies consuming code when the widget state has changed.
+- [x] Visually support a caret | that informs the user about the position of the cursor. The caret should only be visually present when the widget has hover focus.
+- [x] Expose a custom property to get the text entered by the user.
+- [x] Expose an event handler that notifies consuming code when the text has changed.
+- [x] Expose an event handler that notifies consuming code when the widget state has changed.
 
 ### Scroll Bar ###
 - [ ] Expose a custom property to set the height of the scroll bar.
