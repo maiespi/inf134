@@ -41,4 +41,4 @@
 - [x] Expose an event handler that notifies consuming code when the widget state has changed.
 
 ### Custom (your choice) ###
-- [ ] There are no requirements for this widget. You are free to create anything you want. Model your custom widget after something that already exists or design something novel.
+- [x] There are no requirements for this widget. You are free to create anything you want. Model your custom widget after something that already exists or design something novel.
