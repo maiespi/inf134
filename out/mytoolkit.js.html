@@ -1,4 +1,32 @@
-import { SVG } from './svg.min.js';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: mytoolkit.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: mytoolkit.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { SVG } from './svg.min.js';
 
 var MyToolkit = (function() {
     var draw = SVG().addTo('body').size('100%','100%');
@@ -183,7 +211,7 @@ var MyToolkit = (function() {
         var widgetChange = null;
         var checked = false;
 
-        for (var i = 0; i < button_quantity; i++) {
+        for (var i = 0; i &lt; button_quantity; i++) {
             var radio = group.group();
 
             var button = radio.circle(15).attr({
@@ -209,7 +237,7 @@ var MyToolkit = (function() {
                     this.fill({ color: dark_pink });
                     checked = true;
                 } else {
-                    for (var j = 0; j < button_quantity; j++) {
+                    for (var j = 0; j &lt; button_quantity; j++) {
                         var button_circle = group.children()[j].get(0);
 
                         if (button_circle.data('index') != button_index - 1) {
@@ -271,7 +299,7 @@ var MyToolkit = (function() {
              */
             setText: function(index, new_text) {
                 var radio_buttons = group.children();
-                for (var i = 0; i < button_quantity; i++) {
+                for (var i = 0; i &lt; button_quantity; i++) {
                     var button_text = radio_buttons[i].get(1);
                     if (i == index - 1) {
                         button_text.text(new_text);
@@ -309,7 +337,7 @@ var MyToolkit = (function() {
                 console.log("The textbox is now ready for input");
                 SVG.on(document, "keyup", function(e) {
                     if (e.key === "Backspace") {
-                        if (text_string.length <= 1) {
+                        if (text_string.length &lt;= 1) {
                             text_string = "";
                             update();
                         }
@@ -441,7 +469,7 @@ var MyToolkit = (function() {
 
         SVG.on(document, 'mousemove', function(event) {
             if (drag) {
-                if (event.offsetY > outside_scrollbar.y() && event.offsetY < outside_scrollbar.height() + 101) {
+                if (event.offsetY > outside_scrollbar.y() &amp;&amp; event.offsetY &lt; outside_scrollbar.height() + 101) {
                     thumb.y(event.offsetY);
                 }
                 if (thumb_movement != null) {
@@ -556,10 +584,10 @@ var MyToolkit = (function() {
              * @param {number} new_increment - User inputted increment value.
              */
             setIncrementValue: function(new_increment) {
-                if (new_increment > 0 && new_increment <= 100) {
+                if (new_increment > 0 &amp;&amp; new_increment &lt;= 100) {
                     increment_value = new_increment - 1;
                 } else {
-                    console.log("Increment values must be <= 100");
+                    console.log("Increment values must be &lt;= 100");
                 }
             },
             /** Return the current increment value.
@@ -573,11 +601,11 @@ var MyToolkit = (function() {
              */
             incrementProgress: function(new_increment) {
                 progress.width((outside_container.attr("width") * (new_increment * 0.01)) - 6);
-                if (new_increment > previous_value && new_increment <= 100) {
+                if (new_increment > previous_value &amp;&amp; new_increment &lt;= 100) {
                     console.log("Progress has been incremented to " + new_increment);
                 } else if (new_increment == previous_value) {
                     console.log("Progress has stayed the same");
-                } else if (new_increment < previous_value) {
+                } else if (new_increment &lt; previous_value) {
                     console.log("Progress has decreased to " + new_increment);
                 } else {
                     if (previous_value != 0) {
@@ -585,7 +613,7 @@ var MyToolkit = (function() {
                     } else {
                         progress.width(0);
                     }
-                    console.log("Increment values must be 0 <= x <= 100");
+                    console.log("Increment values must be 0 &lt;= x &lt;= 100");
                 }
                 previous_value = new_increment;
             },
@@ -705,4 +733,26 @@ var MyToolkit = (function() {
 return {Button, Checkbox, RadioButton, TextBox, ScrollBar, ProgressBar, ToggleButton}
 }());
 
-export{MyToolkit}
+export{MyToolkit}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#getIncrementValue">getIncrementValue</a></li><li><a href="global.html#getText">getText</a></li><li><a href="global.html#getThumbPosition">getThumbPosition</a></li><li><a href="global.html#incrementProgress">incrementProgress</a></li><li><a href="global.html#move">move</a></li><li><a href="global.html#onAction">onAction</a></li><li><a href="global.html#onclick">onclick</a></li><li><a href="global.html#onIncrement">onIncrement</a></li><li><a href="global.html#onTextUpdate">onTextUpdate</a></li><li><a href="global.html#onThumbMove">onThumbMove</a></li><li><a href="global.html#onWidgetStateChange">onWidgetStateChange</a></li><li><a href="global.html#setHeight">setHeight</a></li><li><a href="global.html#setIncrementValue">setIncrementValue</a></li><li><a href="global.html#setText">setText</a></li><li><a href="global.html#setWidth">setWidth</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu May 20 2021 03:11:47 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
