@@ -2,417 +2,298 @@ import { SVG } from './svg.min.js';
 
 var MyToolkit = (function() {
     var draw = SVG().addTo('body').size('100%','100%');
+    var dark_pink = '#cd5e77';
+    var pink = '#e17f93';
+    var light_pink = '#eba7ac';
 
     var Button = function(){
-        var rect = draw.rect(100,50).attr({
-            fill: 'pink',
-            stroke: 'rgb(0,0,0)',
+        var group = draw.group();
+        var rect = group.rect(100,50).attr({
+            fill: pink,
+            stroke: 'black',
             'stroke-width': 2
-        })
-        var text = draw.text(function(add) {
-            add.tspan("Click me!").attr({
-                x: 150,
-                y: 125,
-                fill: 'black',
-                'font-family': 'Montserrat, sans-serif',
-                'font-size': '14px',
-                'text-anchor': 'middle',
-                'alignment-baseline': 'central'
-            })
-        })
-        var clickEvent = null
-        var clicked = false
+        });
+        var text = group.text("Button").font({
+            fill: 'black',
+            family: 'Montserrat, sans-serif',
+            size: 18,
+            leading: '1.5em',
+            anchor: 'middle'
+        }).center(rect.width()/2, rect.height()/2);
 
-        var click_function = function(){
-            if(clicked == false) {
-                text.clear()
-                text = draw.text(function(add) {
-                    add.tspan("I was clicked!").attr({
-                        x: 150,
-                        y: 125,
-                        fill: 'black',
-                        'font-family': 'Montserrat, sans-serif',
-                        'font-size': '14px',
-                        'text-anchor': 'middle',
-                        'alignment-baseline': 'central'
-                    })
-                })
-                console.log("Button was clicked")
-                clicked = true
-            }
-            else {
-                text.clear()
-                text = draw.text(function(add) {
-                    add.tspan("I'm unclicked!").attr({
-                        x: 150,
-                        y: 125,
-                        fill: 'black',
-                        'font-family': 'Montserrat, sans-serif',
-                        'font-size': '14px',
-                        'text-anchor': 'middle',
-                        'alignment-baseline': 'central'
-                    })
-                })
-                console.log("Button was uncliked")
-                clicked = false
-            }     
-        }
+        var clickEvent = null;
+        var widgetChange = null;
 
-        rect.mouseover(function(){
-            this.fill({ color: '#90ee90'})
-            console.log("Mouse hovered button")
-        })
-        rect.mouseout(function(){
-            this.fill({ color: 'pink'})
-            console.log("Mouse stopped hovering button")
-        })
-        rect.mouseup(function(){
-            this.fill({ color: 'pink'})
-            console.log("User finished clicking button")
-        })
-        rect.click(function(event){
-            this.fill({ color: '#ffa500'})
-            click_function()
+        group.mouseover(function(event) {
+            rect.fill({ color: light_pink })
+            if (widgetChange != null)
+                widgetChange(event);
+        });
+        group.mouseout(function(event){
+            rect.fill({ color: pink })
+            if (widgetChange != null)
+                widgetChange(event);
+        });
+        group.mouseup(function(event){
+            rect.fill({ color: pink })
+            if (widgetChange != null)
+                widgetChange(event);
+        });
+        group.mousedown(function(event){
+            rect.fill({ color: dark_pink });
+            if (widgetChange != null)
+                widgetChange(event);
+        });
+        group.click(function(event){
             if(clickEvent != null)
                 clickEvent(event)
-        })
-        text.click(function(){
-            click_function()
-        })
+        });
+
         return {
+            /** moves button by upper left corner to any position
+             * @param {number} x
+             * @param {number} y
+             */
             move: function(x, y) {
-                rect.move(x, y);
+                group.move(x, y);
             },
+            /** event handler listens to when button is clicked
+             * @param {Event} eventHandler 
+             */
             onclick: function(eventHandler){
-                clickEvent = eventHandler
+                clickEvent = eventHandler;
+            },
+            /** sets text on button
+             * @param {string} new_text
+             */
+            setText: function(new_text) {
+                text.text(new_text);
+            },
+            /** event handler listens for when widget state changes
+             * @param {Event} eventHandler
+             */
+            onWidgetStateChange: function(eventHandler) {
+                widgetChange = eventHandler;
             }
-        }
-    }
+        };
+    };
 
     var Checkbox = function(){
-        var clicked = false;
-        var rect = draw.rect(50,50).attr({
+        var group = draw.group();
+
+        var rect = group.rect(50,50).attr({
             fill: 'white',
-            stroke: 'rgb(0,0,0)',
+            stroke: 'black',
             'stroke-width': 2,
-            x: 300,
-            y: 100
-        })
+            radius: 3
+        });
 
-        var text = draw.text(function(add) {
-            add.tspan("Click the checkbox to the left").attr({
-                x: 495,
-                y: 125,
-                fill: 'black',
-                'font-family': 'Montserrat, sans-serif',
-                'font-size': '18px',
-                'text-anchor': 'middle',
-                'alignment-baseline': 'central'
-            })
-        })
+        var text = group.text("Checkbox").font({
+            fill: 'black',
+            family: 'Montserrat, sans-serif',
+            size: 18,
+            leading: '1.5em',
+            anchor: 'left'
+        }).attr({
+            x: rect.attr("x") + 70,
+            y: rect.attr("y") + 2
+        });
 
-        var first_checkmark_line = draw.line(350, 100, 300, 150).attr({
-            stroke: 'white',
-            'stroke-width': 2,
-        })
+        var clickEvent = null;
+        var widgetChange = null;
+        var checked = false;
 
-        var second_checkmark_line = draw.line(300, 100, 350, 150).attr({
-            stroke: 'white',
-            'stroke-width': 2,
-        })
+        rect.mouseover(function(event) {
+            this.stroke({ color: light_pink });
+            if (widgetChange != null)
+                widgetChange(event);
+        });
 
-        var click_function = function() {
-            if (clicked == false) {
-                first_checkmark_line.stroke('black');
-                second_checkmark_line.stroke('black');
-                clicked = true;
-                console.log("Checkbox is checked");
+        rect.mouseout(function(event) {
+            this.stroke({ color: pink });
+            if (widgetChange != null)
+                widgetChange(event);
+        });
+
+        rect.mouseup(function(event){
+            this.stroke({ color: pink });
+            if (widgetChange != null)
+                widgetChange(event);
+        });
+
+        rect.mousedown(function(event){
+            if (widgetChange != null)
+                widgetChange(event);
+        });
+
+        rect.click(function(event) {
+            if (!checked) {
+                this.fill({ color: light_pink});
+                checked = true;
             } else {
-                first_checkmark_line.stroke('white');
-                second_checkmark_line.stroke('white');
-                clicked = false;
-                console.log("Checkbox is unchecked");
+                this.fill({ color: 'white' });
+                checked = false;
             }
+
+            if (clickEvent != null) {
+                if (!checked) {
+                    clickEvent("Checkbox is unchecked");
+                } else {
+                    clickEvent("Checkbox is checked");
+                }
+            }
+        });
+
+        return {
+            /** moves checkbox by upper left corner to any position
+             * @param {number} x
+             * @param {number} y
+             */
+            move: function(x, y) {
+                group.move(x, y);
+            },
+            /** event handler listens to when checkbox is clicked
+             * @param {Event} eventHandler
+             */
+            onclick: function(eventHandler) {
+                clickEvent = eventHandler;
+            },
+            /** sets text to right of checkbox
+             * @param {string} new_text
+             */
+            setText: function(new_text) {
+                text.text(new_text);
+            },
+             /** event handler listens for when widget state changes
+             * @param {Event} eventHandler
+             */
+            onWidgetStateChange: function(eventHandler) {
+                widgetChange = eventHandler;
+            }
+        };
+    };
+
+    /** create group of user-specified amount of radio buttons (min 2), vertically positioned
+     * @param {button_quantity}
+     */
+    var RadioButton = function(button_quantity = 2){
+        var group = draw.group();
+
+        var clickEvent = null;
+        var widgetChange = null;
+        var checked = false;
+
+        for (var i = 0; i < button_quantity; i++) {
+            var radio = group.group();
+
+            var button = radio.circle(15).attr({
+                fill: 'white',
+                stroke: 'black',
+                'stroke-width': 1
+            }).data('index', i);
+
+            var text = radio.text("Radio button " + i).font({
+                fill: 'black',
+                family: 'Montserrat, sans-serif',
+                size: 15
+            }).attr({
+                x: 30,
+                y: -5
+            });
+            radio.y(i * 30);
+
+            button.click(function(event) {
+                var button_index = this.data('index') + 1;
+
+                if (checked == false) {
+                    this.fill({ color: dark_pink });
+                    checked = true;
+                } else {
+                    for (var j = 0; j < button_quantity; j++) {
+                        var button_circle = group.children()[j].get(0);
+
+                        if (button_circle.data('index') != button_index - 1) {
+                            button_circle.fill('white');
+                        } else {
+                            button_circle.fill({ color: dark_pink });
+                        }
+                    }
+                }
+    
+                if (clickEvent != null) {
+                    var index_display = button_index;
+                    clickEvent("Radio button " + index_display + " was checked");
+                }
+
+            });
+
+            button.mouseover(function(event) {
+                this.stroke({ color: light_pink });
+                if (widgetChange != null)
+                    widgetChange(event);
+            });
+    
+            button.mouseout(function(event) {
+                this.stroke({ color: 'black' });
+                if (widgetChange != null)
+                    widgetChange(event);
+            });
+    
+            button.mouseup(function(event) {
+                this.stroke({ color: pink });
+                if (widgetChange != null)
+                    widgetChange(event);
+            });
+    
+            button.mousedown(function(event) {
+                if (widgetChange != null)
+                    widgetChange(event);
+            });
         }
 
-        rect.click(function(event){
-            click_function()
-        })
-        first_checkmark_line.click(function(event){
-            click_function()
-        })
-        second_checkmark_line.click(function(event) {
-            click_function()
-        })
-        rect.mouseover(function(){
-            this.fill({ color: 'lightgrey'});
-            if (clicked == false) {
-                first_checkmark_line.stroke({ color: 'lightgrey'});
-                second_checkmark_line.stroke({ color: 'lightgrey'});
-            }
-            console.log("Mouse hovering checkbox");
-        })
-        first_checkmark_line.mouseover(function(){
-            rect.fill({ color: 'lightgrey'});
-            if (clicked == false) {
-                first_checkmark_line.stroke({ color: 'lightgrey'});
-                second_checkmark_line.stroke({ color: 'lightgrey'});
-            }
-        })
-        second_checkmark_line.mouseover(function(){
-            rect.fill({ color: 'lightgrey'});
-            if (clicked == false) {
-                first_checkmark_line.stroke({ color: 'lightgrey'});
-                second_checkmark_line.stroke({ color: 'lightgrey'});
-            }
-        })
-        rect.mouseout(function(){
-            this.fill({ color: 'white'});
-            if (clicked == false) {
-                first_checkmark_line.stroke({ color: 'white'});
-                second_checkmark_line.stroke({ color: 'white'});
-            }
-            console.log("Mouse not hovering checkbox anymore");
-        })
-        first_checkmark_line.mouseout(function(){
-            rect.fill({ color: 'lightgrey'});
-            if (clicked == false) {
-                first_checkmark_line.stroke({ color: 'lightgrey'});
-                second_checkmark_line.stroke({ color: 'lightgrey'});
-            }
-            console.log("Mouse not hovering checkbox anymore");
-        })
-        second_checkmark_line.mouseout(function(){
-            rect.fill({ color: 'lightgrey'});
-            if (clicked == false) {
-                first_checkmark_line.stroke({ color: 'lightgrey'});
-                second_checkmark_line.stroke({ color: 'lightgrey'});
-            }
-            console.log("Mouse not hovering checkbox anymore");
-        })
-        rect.mouseup(function(){
-            this.fill({ color: 'white'});
-            console.log("Checkbox was just clicked");
-        })
-    }
-
-    var RadioButton = function(){
-        var clicked1 = false;
-        var clicked2 = false;
-        var clicked3 = false;
-
-        var outside_circle1 = draw.circle(15)
-        var outside_circle2 = draw.circle(15)
-        var outside_circle3 = draw.circle(15)
-
-        var inside_circle1 = draw.circle(10)
-        var inside_circle2 = draw.circle(10)
-        var inside_circle3 = draw.circle(10)
-
-        outside_circle1.attr({
-            stroke: 'black',
-            fill: 'white'
-        })
-
-        inside_circle1.attr({
-            fill:'white'
-        })
-
-        var text1 = draw.text(function(add) {
-            add.tspan("Click radio button 1").attr({
-                x: 800,
-                y: 91,
-                fill: 'black',
-                'font-family': 'Montserrat, sans-serif',
-                'font-size': '12px',
-                'text-anchor': 'middle',
-                'alignment-baseline': 'central'
-            })
-        })
-
-        outside_circle2.attr({
-            stroke: 'black',
-            fill: 'white'
-        })
-
-        inside_circle2.attr({
-            fill:'white'
-        })
-
-        var text2 = draw.text(function(add) {
-            add.tspan("Click radio button 2").attr({
-                x: 743,
-                y: 127,
-                fill: 'black',
-                'font-family': 'Montserrat, sans-serif',
-                'font-size': '12px'
-            })
-        })
-
-        outside_circle3.attr({
-            stroke: 'black',
-            fill: 'white'
-        })
-
-        inside_circle3.attr({
-            fill:'white'
-        })
-
-        var text3 = draw.text(function(add) {
-            add.tspan("Click radio button 3").attr({
-                x: 743,
-                y: 157,
-                fill: 'black',
-                'font-family': 'Montserrat, sans-serif',
-                'font-size': '12px'
-            })
-        })
-
-        outside_circle1.move(710,86)
-        outside_circle2.move(710,115)
-        outside_circle3.move(710,145)
-
-        inside_circle1.move(712.5,88.5)
-        inside_circle2.move(712.5,117.5)
-        inside_circle3.move(712.5,147.5)
-
-        inside_circle1.click(function(event){
-            if (clicked1 == false) {
-                this.fill('pink')
-                clicked1 = true
-                console.log("Radio button 1 was clicked")
-                if (clicked2 == true || clicked3 == true) {
-                    clicked2 = false
-                    clicked3 = false
-                    inside_circle2.fill('white')
-                    inside_circle3.fill('white')
+        return {
+            /** moves radio button group by upper left corner to any position
+             * @param {number} x
+             * @param {number} y
+             */
+            move: function(x, y) {
+                group.move(x, y);
+            },
+            /** event handler listens to when radio button is clicked
+             * @param {Event} eventHandler
+             */
+            onclick: function(eventHandler) {
+                clickEvent = eventHandler;
+            },
+            /** sets text to right of checkbox
+             * @param {index} - index of button text to change
+             * @param {new_text} - new text label
+             */
+            setText: function(index, new_text) {
+                var radio_buttons = group.children();
+                for (var i = 0; i < button_quantity; i++) {
+                    var button_text = radio_buttons[i].get(1);
+                    if (i == index - 1) {
+                        button_text.text(new_text);
+                    }
                 }
-            } else {
-                this.fill('white')
-                clicked1 = false
-                console.log("Radio button 1 was unclicked")
+            },
+             /** event handler listens for when widget state changes
+             * @param {Event} eventHandler
+             */
+            onWidgetStateChange: function(eventHandler) {
+                widgetChange = eventHandler;
             }
-        })
-
-        inside_circle1.mouseover(function() {
-            console.log("Mouse hovering radio button 1")
-        })
-
-        inside_circle1.mouseout(function() {
-            console.log("Mouse stopped hovering radio button 1")
-        })
-
-        outside_circle1.click(function(event){
-            if (clicked1 == false) {
-                inside_circle1.fill('pink')
-                clicked1 = true
-                console.log("Radio button 1 was clicked")
-                if (clicked2 == true || clicked3 == true) {
-                    clicked2 = false
-                    clicked3 = false
-                    inside_circle2.fill('white')
-                    inside_circle3.fill('white')
-                }
-            } else {
-                inside_circle1.fill('white')
-                clicked1 = false
-                console.log("Radio button 1 was unclicked")
-            }
-        })
-
-        inside_circle2.click(function(event){
-            if (clicked2 == false) {
-                this.fill('#90ee90')
-                clicked2 = true
-                console.log("Radio button 2 was clicked")
-                if (clicked1 == true || clicked3 == true) {
-                    clicked1 = false
-                    clicked3 = false
-                    inside_circle1.fill('white')
-                    inside_circle3.fill('white')
-                }
-            } else {
-                this.fill('white')
-                clicked2 = false
-                console.log("Radio button 2 was unclicked")
-            }
-        })
-
-        inside_circle2.mouseover(function() {
-            console.log("Mouse hovering radio button 2")
-        })
-
-        inside_circle2.mouseout(function() {
-            console.log("Mouse stopped hovering radio button 2")
-        })
-
-        outside_circle2.click(function(event){
-            if (clicked2 == false) {
-                inside_circle2.fill('#90ee90')
-                clicked2 = true
-                console.log("Radio button 2 was clicked")
-                if (clicked1 == true || clicked3 == true) {
-                    clicked1 = false
-                    clicked3 = false
-                    inside_circle1.fill('white')
-                    inside_circle3.fill('white')
-                }
-            } else {
-                inside_circle2.fill('white')
-                clicked2 = false
-                console.log("Radio button 2 was unclicked")
-            }
-        })
-
-        inside_circle3.click(function(event){
-            if (clicked3 == false) {
-                this.fill('#ffa500')
-                clicked3 = true
-                console.log("Radio button 3 was clicked")
-                if (clicked1 == true || clicked2 == true) {
-                    clicked1 = false
-                    clicked2 = false
-                    inside_circle1.fill('white')
-                    inside_circle2.fill('white')
-                }
-            } else {
-                this.fill('white')
-                clicked3 = false
-                console.log("Radio button 3 was unclicked")
-            }
-        })
-
-        inside_circle3.mouseover(function() {
-            console.log("Mouse hovering radio button 3")
-        })
-
-        inside_circle3.mouseout(function() {
-            console.log("Mouse stopped hovering radio button 3")
-        })
-
-        outside_circle3.click(function(event){
-            if (clicked3 == false) {
-                inside_circle3.fill('#ffa500')
-                clicked3 = true
-                console.log("Radio button 3 was clicked")
-                if (clicked1 == true || clicked2 == true) {
-                    clicked1 = false
-                    clicked2 = false
-                    inside_circle1.fill('white')
-                    inside_circle2.fill('white')
-                }
-            } else {
-                inside_circle3.fill('white')
-                clicked3 = false
-                console.log("Radio button 3 was unclicked")
-            }
-        })
+        };
     }
 
     var TextBox = function() {
-        var text_string = ""
-        var clicked = false
-        var mouse = false
+        var text_string = "";
+        var clicked = false;
+        var mouse = false;
+
+        var text_update = null;
+        var widgetChange = null;
 
         var group = draw.group();
         var rect = group.rect(350, 75).fill("white").stroke("black");
@@ -421,36 +302,41 @@ var MyToolkit = (function() {
             'font-family': 'Montserrat, sans-serif',
             'font-size': '18px'
         });
-        group.move(970,80);
 
         group.click(function(event) {
             if (clicked == false) {
-                clicked = true
-                console.log("The textbox is now ready for input")
+                clicked = true;
+                console.log("The textbox is now ready for input");
                 SVG.on(document, "keyup", function(e) {
                     if (e.key === "Backspace") {
                         if (text_string.length <= 1) {
-                            text_string = ""
-                            update()
+                            text_string = "";
+                            update();
                         }
                         else {
-                            text_string = text_string.substr(0, text_string.length - 1)
-                            update()
+                            text_string = text_string.substr(0, text_string.length - 1);
+                            update();
                         }
                     } 
                     else if (e.key === "Shift" || e.key === "Enter") {
                         
                     }
                     else {
-                        var letter = e.key
-                        text_string = text_string + letter
-                        console.log(text_string)
-                        update()
+                        var letter = e.key;
+                        text_string = text_string + letter;
+                        update();
                     }
-                })
+
+                    if (text_update != null) {
+                        text_update("User has updated text");
+                    }
+                });
             } else {
-                console.log("User has already clicked on the textbox")
-            }      
+                console.log("User has already clicked on the textbox");
+            }
+            if (widgetChange != null) {
+                widgetChange(event);
+            }     
         })
 
         var update = function() {
@@ -462,20 +348,263 @@ var MyToolkit = (function() {
                   
         }
 
-        group.mouseover(function() {
+        group.mouseover(function(event) {
             mouse = true;
             text.text(text_string + "|");
-            console.log("Mouse is hovering textbox");
+            if (widgetChange != null) {
+                widgetChange(event);
+            } 
         })
 
-        group.mouseout(function() {
+        group.mouseout(function(event) {
             mouse = false;
             text.text(text_string);
-            console.log("Mouse is no longer hovering textbox");
+            if (widgetChange != null) {
+                widgetChange(event);
+            } 
         })
+
+        return {
+            /** moves textbox group by upper left corner to any position
+             * @param {number} x
+             * @param {number} y
+             */
+            move: function(x, y) {
+                group.move(x, y);
+            },
+            /** returns the user's text
+             * @return {string}
+             */
+            getText: function() {
+                return text.text();
+            },
+            /** event handler listens for when the text chanes
+             * @param {Event} eventHandler
+             */
+            onTextUpdate: function(eventHandler) {
+                text_update = eventHandler;
+            },
+            /** event handler listens for when widget state changes
+            * @param {Event} eventHandler
+            */
+            onWidgetStateChange: function(eventHandler) {
+               widgetChange = eventHandler;
+           }
+        }
     }
 
-return {Button, Checkbox, RadioButton, TextBox}
+    var ScrollBar = function() {
+        var group = draw.group();
+        var height = 400;
+
+        var outside_scrollbar = group.rect(40,height).attr({
+            fill: 'grey',
+            stroke: 'rgb(0,0,0)',
+            'stroke-width': 2,
+            'radius': 5
+        })
+
+        var thumb = group.rect(34,height/4).attr({
+            fill: 'pink',
+            stroke: 'rgb(0,0,0)',
+            'stroke-width': 2,
+            'radius': 5,
+            cx: 10,
+            cy: 2
+        })
+
+        var drag = false;
+        var thumb_movement = null;
+        var widgetChange = null;
+
+        thumb.mousedown(function(event) {
+            drag = true;
+            thumb.fill({ color: 'pink'});
+            if (widgetChange != null)
+                widgetChange(event);
+        })
+
+        thumb.mouseover(function(event) {
+            if (widgetChange != null)
+                widgetChange(event);
+        });
+
+        thumb.mouseout(function(event) {
+            if (widgetChange != null)
+                widgetChange(event);
+        });
+
+        thumb.mouseup(function(event) {
+            if (widgetChange != null)
+                widgetChange(event);
+        });
+
+        SVG.on(document, 'mousemove', function(event) {
+            if (drag) {
+                if (event.offsetY > outside_scrollbar.y() && event.offsetY < outside_scrollbar.height() + 151) {
+                    thumb.y(event.offsetY);
+                }
+                if (thumb_movement != null) {
+                    thumb_movement("Scrollbar thumb has moved");
+                }
+            }
+        });
+
+        SVG.on(document, 'mouseup', function(event) {
+            drag = false;
+            thumb.fill({ color: 'pink' });
+        });
+
+        return {
+            /** moves scrollbar by upper left corner to any position
+             * @param {number} x
+             * @param {number} y
+             */
+            move: function(x, y) {
+                outside_scrollbar.move(x, y);
+                thumb.move(x + 3,y + 3);
+            },
+             /** event handler listens when thumb moves
+             * @param {Event} eventHandler
+             */
+            onThumbMove: function(eventHandler) {
+                thumb_movement = eventHandler;
+            },
+            /** return thumb position
+             * @return {string}
+             */
+            getThumbPosition: function() {
+                return thumb.x() + ", " + thumb.y();
+            },
+            /** change height of the scrollbar
+             * @param {number} new_height
+             */
+            setHeight: function(new_height) {
+                outside_scrollbar.attr({
+                    'height': new_height
+                })
+            },
+            /** event handler listens for when widget state changes
+             * @param {Event} eventHandler
+             */
+            onWidgetStateChange: function(eventHandler) {
+                widgetChange = eventHandler;
+            }
+        }
+    }
+
+    var ProgressBar = function() {
+        var group = draw.group();
+        var width = 400;
+
+        var previous_value = 0;
+        var increment_value = 50;
+
+        var incrementChange = null;
+        var widgetChange = null;
+
+        var outside_container = group.rect(width,30).attr({
+            fill: 'lightgrey',
+            stroke: 'rgb(0,0,0)',
+            'stroke-width': 2
+        });
+
+        var progress = group.rect(0, 24).attr({
+            fill: 'pink',
+            stroke: 'rgb(0,0,0)',
+            'stroke-width': 2
+        });
+
+        group.mouseout(function(event) {
+            if (widgetChange != null)
+                widgetChange(event);
+        });
+
+        group.mouseup(function(event) {
+            if (widgetChange != null)
+                widgetChange(event);
+        });
+
+        group.mousedown(function(event) {
+            if (widgetChange != null)
+                widgetChange(event);
+        });
+
+        group.mouseover(function(event) {
+            if (widgetChange != null)
+                widgetChange(event);
+        });
+
+        return {
+            /** moves progress bar by upper left corner to any position
+             * @param {number} x
+             * @param {number} y
+             */
+            move: function(x, y) {
+                outside_container.move(x, y);
+                progress.move(x + 3,y + 3);
+            },
+            /** change width of the progress bar
+             * @param {number} new_width
+             */
+            setWidth: function(new_width) {
+                outside_container.attr({
+                    'width': new_width
+                });
+            },
+            /** user can set value to increment by
+             * @param {number} new_increment
+             */
+            setIncrementValue: function(new_increment) {
+                if (new_increment > 0 && new_increment <= 100) {
+                    increment_value = new_increment - 1;
+                } else {
+                    console.log("Increment values must be <= 100");
+                }
+            },
+            /** return the current increment value
+             * @return {number}
+             */
+            getIncrementValue: function() {
+                return increment_value;
+            },
+            /** increment progress bar by a value from 1-100
+             * @param {number} new_increment
+             */
+            incrementProgress: function(new_increment) {
+                progress.width((outside_container.attr("width") * (new_increment * 0.01)) - 6);
+                if (new_increment > previous_value && new_increment <= 100) {
+                    console.log("Progress has been incremented to " + new_increment);
+                } else if (new_increment == previous_value) {
+                    console.log("Progress has stayed the same");
+                } else if (new_increment < previous_value) {
+                    console.log("Progress has decreased to " + new_increment);
+                } else {
+                    if (previous_value != 0) {
+                        progress.width((outside_container.attr("width") * (previous_value * 0.01)) - 6);
+                    } else {
+                        progress.width(0);
+                    }
+                    console.log("Increment values must be 0 <= x <= 100");
+                }
+                previous_value = new_increment;
+            },
+            /** event handler listens for when the progress incrementation changes
+             * @param {Event} eventHandler
+             */
+            onIncrement: function(eventHandler) {
+                incrementChange = eventHandler;
+            },
+            /** event handler listens for when widget state changes
+             * @param {Event} eventHandler
+             */
+            onWidgetStateChange: function(eventHandler) {
+                widgetChange = eventHandler;
+            }
+        }
+    }
+
+return {Button, Checkbox, RadioButton, TextBox, ScrollBar, ProgressBar}
 }());
 
 export{MyToolkit}

@@ -8,7 +8,61 @@ btn.move(100,100);
 btn.onclick(function(e){
 	console.log(e);
 });
+btn.setText("Click me!");
+btn.onWidgetStateChange(function(e) {
+    console.log(e.type);
+});
 
+// Implement a MyToolkit Checkbox
 var checkbox = new MyToolkit.Checkbox;
-var radio_button = new MyToolkit.RadioButton;
+checkbox.move(300, 100);
+checkbox.onclick(function(e) {
+    console.log(e);
+});
+checkbox.setText("Click this checkbox to the left");
+checkbox.onWidgetStateChange(function(e) {
+    console.log(e.type);
+});
+
+// Implement a MyToolkit Radio Button
+var radiobutton = new MyToolkit.RadioButton(2);
+radiobutton.move(720, 100);
+radiobutton.onclick(function(e) {
+    console.log(e)
+});
+radiobutton.setText(1, "Radio Button 1");
+radiobutton.setText(2, "Radio Button 2");
+radiobutton.onWidgetStateChange(function(e) {
+    console.log(e.type);
+})
+
+// Implement a MyToolkit Textbox
 var textbox = new MyToolkit.TextBox;
+textbox.move(970,80);
+textbox.onTextUpdate(function(e) {
+    console.log(e);
+});
+textbox.onWidgetStateChange(function(e) {
+    console.log(e.type);
+});
+console.log(textbox.getText());
+
+// Implement a MyToolkit Scrollbar
+var scrollbar = new MyToolkit.ScrollBar;
+scrollbar.move(200,250);
+scrollbar.onThumbMove();
+scrollbar.setHeight(400);
+
+// Implement a MyToolkit Progress Bar
+var progressbar = new MyToolkit.ProgressBar;
+progressbar.move(420,250);
+progressbar.setWidth(400);
+progressbar.setIncrementValue(30);
+progressbar.getIncrementValue();
+progressbar.incrementProgress(94);
+progressbar.onIncrement(function (e) {
+    console.log(e);
+});
+progressbar.onWidgetStateChange(function (e) {
+    console.log(e.type);
+})
